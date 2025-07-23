@@ -1,0 +1,12 @@
+.pred-vert {
+    height: auto;
+    /* 높이 고정하지 말고 콘텐츠에 맞게 늘어나게 */
+    align-items: center;
+    /* 가운데 정렬 */
+}
+
+.donut-chart-container {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+}

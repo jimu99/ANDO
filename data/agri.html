@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>농경지 인접 비율 도넛차트</title>
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #f8f8f8;
+      color: #333;
+      text-align: center;
+      padding-top: 50px;
+    }
+    #donut-chart {
+      margin: 0 auto;
+      width: 420px;
+      height: 420px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>농경지 인접 비율 시각화</h2>
+  <div id="donut-chart"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script>
+    const data = [
+      { label: '인접', value: 1602 },
+      { label: '비인접', value: 588 },
+    ];
+
+    const width = 400;
+    const height = 400;
+    const radius = Math.min(width, height) / 2;
+
+    const svg = d3.select("#donut-chart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    const color = d3.scaleOrdinal()
+      .domain(data.map(d => d.label))
+      .range(["#FFD700", "#CCCCCC"]);
+
+    const pie = d3.pie().value(d => d.value);
+    const data_ready = pie(data);
+
+    const arc = d3.arc()
+      .innerRadius(radius * 0.6)
+      .outerRadius(radius * 0.9);
+
+    svg
+      .selectAll('path')
+      .data(data_ready)
+      .join('path')
+      .attr("fill", d => color(d.data.label))
+      .attr("stroke", "#fff")
+      .style("stroke-width", "2px")
+      .transition()
+      .duration(1000)
+      .attrTween("d", function(d) {
+        const i = d3.interpolate(d.startAngle, d.endAngle);
+        return function(t) {
+          d.endAngle = i(t);
+          return arc(d);
+        };
+      });
+
+    const texts = svg
+      .selectAll('g.label')
+      .data(data_ready)
+      .join('g')
+      .attr('class', 'label')
+      .attr("transform", d => "translate(" + arc.centroid(d) + ")");
+
+    texts.append("text")
+      .text(d => d.data.label)
+      .attr("y", -10)
+      .style("text-anchor", "middle")
+      .style("font-size", "14px")
+      .style("fill", "#333");
+
+    texts.append("text")
+      .text(d => ((d.data.value / 2190) * 100).toFixed(1) + "%")
+      .attr("y", 10)
+      .style("text-anchor", "middle")
+      .style("font-size", "14px")
+      .style("fill", "#333");
+  </script>
+</body>
+</html>

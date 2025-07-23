@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.ando-logo {
+    height: 200px !important;
+    width: auto;
+    object-fit: contain;
+}
+
+.site-logo {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    padding-top: 45px;
+}
+
+/* 헤더 고정 */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #bdbdbd;
+    z-index: 1000;
+}
+
+.header-inner {
+    height: 100%;
+    max-width: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.site-title {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* 전체 레이아웃 */
+.content {
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
+    height: calc(100vh - 100px);
+    padding-top: 60px;
+    overflow: hidden;
+}
+
+/* 카테고리 */
+.category-panel {
+    flex: 0 0 12%;
+    min-width: 180px;
+    background: #535353;
+    color: #fbf547;
+    padding: 20px;
+}
+
+.category-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-panel li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.category-panel li:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.category-panel li.active-tab,
+.category-panel .submenu li.active {
+    background-color: #fbf547;
+    color: #535353;
+    font-weight: bold;
+}
+
+.main-panel {
+    flex: 0 0 800px;
+    overflow:auto;
+    height: 100%;
+    background: #f9f9f9;
+    padding: 20px;
+            /* ✅ 여백 추가 */
+    padding-top: 40px;
+            /* ✅ 위쪽 여백 더 확보 */
+}
+
+/* 설명 문단 */
+.service-desc {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* 가로 카드 */
+.pred-horz {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+.pred-horz-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6);
+}
+
+.pred-horz-text {
+    position: relative;
+    color: #fff;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 세로 카드 */
+.pred-vert-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.pred-vert {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 400px;
+}
+
+.risk-high {
+    color: red;
+    font-weight: bold;
+}
+
+.risk-low {
+    color: green;
+    font-weight: bold;
+}
+
+#map {
+    flex: 1;
+    min-width: 300px;
+    background: #eee;
+}
+
+/* 탭 전환용 */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.submenu {
+    display: none;
+    list-style: none;
+    padding-left: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 서브카테고리 들여쓰기 + 마커 */
+.category-panel ul.submenu>li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 14px;
+    color: #ffd900;
+}
+
+.category-panel ul.submenu>li::before {
+    content: "♥";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e3ff2b;
+    font-size: 12px;
+}
+
+.submenu li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}

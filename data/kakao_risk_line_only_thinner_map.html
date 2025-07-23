@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>위험도 선 시각화 (굵기 줄임)</title>
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .legend {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      font-size: 13px;
+      line-height: 1.6;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+    .legend div {
+      display: flex;
+      align-items: center;
+    }
+    .legend-color {
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  </style>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02875da2b82801825baeb40be378b36b"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="legend">
+    <div><span class="legend-color" style="background:#00cc66"></span>안전</div>
+    <div><span class="legend-color" style="background:#ffff00"></span>주의</div>
+    <div><span class="legend-color" style="background:#ff9900"></span>경계</div>
+    <div><span class="legend-color" style="background:#ff0000"></span>위험</div>
+    <div><span class="legend-color" style="background:#000000"></span>매우위험</div>
+  </div>
+  <script>
+    const mapContainer = document.getElementById('map');
+    const mapOption = {
+      center: new kakao.maps.LatLng(36.08368395, 127.53711649999998),
+      level: 8
+    };
+    const map = new kakao.maps.Map(mapContainer, mapOption);
+
+    fetch('kakao_risk_lines_simplified.json')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(feature => {
+          const coords = feature.geometry.coordinates.map(coord => new kakao.maps.LatLng(coord[1], coord[0]));
+          const color = feature.properties.color;
+
+          const polyline = new kakao.maps.Polyline({
+            path: coords,
+            strokeWeight: 9,  // ✅ 굵기 줄임
+            strokeColor: color,
+            strokeOpacity: 0.9,
+            strokeStyle: 'solid'
+          });
+          polyline.setMap(map);
+        });
+      });
+  </script>
+</body>
+</html>

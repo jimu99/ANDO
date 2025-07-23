@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>D3 버블 차트 - 고라니 서식지</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #fff;
+    }
+    svg {
+      width: 100%;
+      height: 600px;
+    }
+    text {
+      font-size: 11px;
+      text-anchor: middle;
+      fill: #000;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>고라니 주요 서식지 유형 비율 (산림 제외)</h2>
+  <svg></svg>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    const data = [{"id": "경작지", "value": 600, "percent": "72.6", "color": "#FFD700"}, {"id": "하천변", "value": 141, "percent": "17.1", "color": "#FFD700"}, {"id": "해안", "value": 49, "percent": "5.9", "color": "#CCCCCC"}, {"id": "습지", "value": 26, "percent": "3.1", "color": "#CCCCCC"}, {"id": "나지", "value": 10, "percent": "1.2", "color": "#CCCCCC"}];
+
+    const width = 800;
+    const height = 600;
+
+    const svg = d3.select("svg")
+      .attr("viewBox", [0, 0, width, height]);
+
+    const radiusScale = d3.scaleSqrt()
+      .domain([0, d3.max(data, d => d.value)])
+      .range([20, 60]);
+
+    const simulation = d3.forceSimulation(data)
+      .force("charge", d3.forceManyBody().strength(5))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide(d => radiusScale(d.value) + 2))
+      .on("tick", ticked);
+
+    const node = svg.selectAll("g")
+      .data(data)
+      .enter().append("g")
+      .call(drag(simulation));
+
+    node.append("circle")
+      .attr("r", d => radiusScale(d.value))
+      .attr("fill", d => d.color)
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 2);
+
+    node.append("text")
+      .attr("dy", "-0.4em")
+      .text(d => d.id);
+
+    node.append("text")
+      .attr("dy", "0.9em")
+      .text(d => d.percent + "%");
+
+    function ticked() {
+      node.attr("transform", d => `translate(${d.x}, ${d.y})`);
+    }
+
+    function drag(simulation) {
+      function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+      function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+      function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+      return d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
+    }
+  </script>
+</body>
+</html>

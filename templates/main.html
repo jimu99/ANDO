@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      로드킬 예방을 위한 고속도로 야생동물 출현 위험도 분석 및 예측 시스템
+    </title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/charts.css' %}" />
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <img
+          src="{% static 'images/gorani_logo.png' %}"
+          alt="고라니 로고"
+          class="site-logo"
+        />
+        <img
+          src="{% static 'images/ando_logo.png' %}"
+          alt="안도로고"
+          class="site-logo ando-logo"
+        />
+
+        <h1 class="site-title">
+          로드킬 예방을 위한 고속도로 야생동물 출현 위험도 분석 및 예측 시스템
+        </h1>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- 💡 변경된 가로 레이아웃 wrapper -->
+      <div class="category-panel">
+        <h2>카테고리</h2>
+        <ul>
+          <li onclick="showTab(0)">메인</li>
+
+          <li onclick="toggleSubmenu(this)">카테고리 1 ▾</li>
+          <ul class="submenu">
+            <li onclick="showSubTab('subcat1')">서브카테고리 1</li>
+            <li onclick="showSubTab('subcat2')">서브카테고리 2</li>
+            <li onclick="showSubTab('subcat3')">서브카테고리 3</li>
+          </ul>
+
+          <li onclick="showTab(2)">카테고리 2</li>
+          <li onclick="showTab(3)">카테고리 3</li>
+          <li onclick="showTab(4)">카테고리 4</li>
+        </ul>
+      </div>
+
+      <div class="main-panel">
+        <div class="tab-content active" id="tab0">
+          <p class="service-desc">
+            중부고속도로 내내 동물 위험도 분석 시스템은 로드킬 발생 가능성이
+            있는 데이터를 기반으로 분석·예측해 안전 운행을 돕는 서비스입니다.
+          </p>
+
+          <h2>고라니 생태 정보</h2>
+          <div class="pred-horz">
+            <img
+              src="{% static 'images/생태통로.jpg' %}"
+              alt="생태통로 이미지"
+              class="pred-horz-bg"
+            />
+            <div class="pred-horz-text">
+              <p>🦊 <strong>가로박스</strong></p>
+              <p>예측 로드킬 위험도: <span class="risk-high">위험</span></p>
+              <p>정말 재미있다: <strong>72.5%</strong></p>
+            </div>
+          </div>
+
+          <div class="pred-vert-container">
+            <div class="pred-vert">
+              <p>🦊 <strong>세로박스 1</strong></p>
+              <div class="donut-chart-container">
+                <canvas id="roadkillDonutChart"></canvas>
+              </div>
+            </div>
+            <div class="pred-vert">
+              <p>🦌 <strong>세로박스 2</strong></p>
+              <p>예측 로드킬 위험도: <span class="risk-low">낮음</span></p>
+              <p>예측 확률: <strong>23.1%</strong></p>
+            </div>
+          </div>
+        </div>
+
+        {% for i in "1234"|make_list %}
+        <div class="tab-content" id="tab{{ i }}">
+          {% include 'components/category'|add:i|stringformat:"s"|add:'.html' %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div id="map"></div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=02875da2b82801825baeb40be378b36b"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="{% static 'js/roadkill-donut.js' %}"></script>
+    <script src="{% static 'js/kakao-map.js' %}"></script>
+    <script src="{% static 'js/subcat1_chart.js' %}?v={{ now|date:'YmdHis' }}"></script>
+
+    <script src="{% static 'js/ui.js' %}"></script>
+    <script src="{% static 'js/subcat1_chart.js' %}"></script>
+    <script src="{% static 'js/subcat2_chart.js' %}"></script>
+    <script src="{% static 'js/subcat3_chart.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>고라니 비율 도넛 차트</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #myChart {
+      max-width: 500px;
+      margin: 50px auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>전체 로드킬 중 상위 5종 (고라니 강조)</h2>
+  <canvas id="myChart"></canvas>
+
+  <script>
+    const labels = ['고라니', '고양이', '멧돼지', '너구리', '개'];
+    const data = [3459, 383, 300, 274, 178];
+    const percent = ['67.3%', '7.4%', '5.8%', '5.3%', '3.5%'];
+    const backgroundColors = ['#FFD700', '#CCCCCC', '#CCCCCC', '#CCCCCC', '#CCCCCC'];
+
+    new Chart(document.getElementById('myChart'), {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: backgroundColors,
+          borderColor: '#ffffff',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          animateRotate: true,
+          duration: 1500
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const idx = context.dataIndex;
+                return `${labels[idx]}: ${data[idx]}건 (${percent[idx]})`;
+              }
+            }
+          },
+          datalabels: {
+            color: '#000',
+            font: {
+              weight: 'bold',
+              size: 14
+            },
+            formatter: function(value, context) {
+              return labels[context.dataIndex] + '\n' + percent[context.dataIndex];
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  </script>
+
+</body>
+</html>
