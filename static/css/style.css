@@ -70,7 +70,7 @@ header {
 .category-panel {
     flex: 0 0 12%;
     min-width: 180px;
-    background: #535353;
+    background: #bdbdbd;
     color: #fbf547;
     padding: 20px;
 }
@@ -83,7 +83,7 @@ header {
 
 .category-panel li {
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid #bdbdbd;
     cursor: pointer;
 }
 
